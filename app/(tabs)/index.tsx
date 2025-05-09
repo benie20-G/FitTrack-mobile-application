@@ -6,10 +6,13 @@ import ProgressSummary from '@/components/ProgressSummary';
 import { useFonts } from 'expo-font';
 import { Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 import { SplashScreen } from 'expo-router';
+import { quickActionss } from './quickaction';
+import { workouts } from './workout';
+
 
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
-
+console.log(workouts);
 export default function HomeScreen() {
   const [greeting, setGreeting] = useState('Good morning');
   const [loaded, error] = useFonts({
@@ -56,39 +59,33 @@ export default function HomeScreen() {
       <View style={styles.quickActions}>
         <Text style={styles.sectionTitle}>Quick Actions</Text>
         <View style={styles.actionButtons}>
-          <Pressable style={styles.actionButton}>
-            <View style={[styles.actionIcon, { backgroundColor: '#0d9488' }]}>
-              <Dumbbell size={24} color="#ffffff" />
-            </View>
-            <Text style={styles.actionText}>New Workout</Text>
-          </Pressable>
-
-          <Pressable style={styles.actionButton}>
-            <View style={[styles.actionIcon, { backgroundColor: '#1e40af' }]}>
-              <TrendingUp size={24} color="#ffffff" />
-            </View>
-            <Text style={styles.actionText}>Log Progress</Text>
-          </Pressable>
-
-          <Pressable style={styles.actionButton}>
-            <View style={[styles.actionIcon, { backgroundColor: '#f97316' }]}>
-              <Trophy size={24} color="#ffffff" />
-            </View>
-            <Text style={styles.actionText}>Set Goal</Text>
-          </Pressable>
-
-          <Pressable style={styles.actionButton}>
-            <View style={[styles.actionIcon, { backgroundColor: '#64748b' }]}>
-              <Calendar size={24} color="#ffffff" />
-            </View>
-            <Text style={styles.actionText}>Schedule</Text>
-          </Pressable>
+         {quickActionss.map((action)=>{
+          const Icon=action.icon;
+          return(
+            <Pressable key={action.id} style={styles.actionButton}>
+              <View style={[styles.actionIcon, {backgroundColor: action.backgroundColor}]}>
+                <Icon size={24} color='#ffff'></Icon>
+              </View>
+              <Text>{action.text}</Text>
+            </Pressable>          )
+         })}
+          
         </View>
       </View>
 
       <View style={styles.workoutsSection}>
+        
         <Text style={styles.sectionTitle}>Recommended Workouts</Text>
-        <WorkoutCard
+    {/* {workouts.map((workout) => (
+  <WorkoutCard
+    key={workout.id}
+    title={workout.title}
+    duration={workout.duration}
+    difficulty={workout.difficulty}
+    image={workout.image}
+  />
+))} */}
+     <WorkoutCard
           title="Upper Body Strength"
           duration="45 min"
           difficulty="Intermediate"
@@ -106,7 +103,9 @@ export default function HomeScreen() {
           difficulty="Beginner"
           image="https://images.pexels.com/photos/6551133/pexels-photo-6551133.jpeg?auto=compress&cs=tinysrgb&w=800"
         />
+        
       </View>
+
     </ScrollView>
   );
 }
